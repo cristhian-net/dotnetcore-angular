@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using dotnetcore.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnetcore.Repository
 {
@@ -38,21 +40,30 @@ namespace dotnetcore.Repository
             editedEntity = entity;
         }
 
-        public TEntity GetById(Guid id)
+        public async Task<TEntity> GetById(Guid id)
         {
-            return _context.Set<TEntity>().FirstOrDefault(e => e.Id == id);
+            return await _context.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public IEnumerable<TEntity> Filter()
+        public async Task<IEnumerable<TEntity>> Filter()
         {
-            return _context.Set<TEntity>();
+            return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public IEnumerable<TEntity> Filter(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> Filter(Expression<Func<TEntity, bool>> predicate)
         {
-            return _context.Set<TEntity>().Where(predicate);
+            return await _context.Set<TEntity>().Where(predicate).ToListAsync();
         }
 
-        public void SaveChanges() => _context.SaveChanges();
+        public async Task<bool> SaveChanges()
+        {
+            var result = await _context.SaveChangesAsync();
+            return result > 0;
+        }
+
+        protected DbSet<TEntity> GetContext()
+        {
+            return this._context.Set<TEntity>();
+        }
     }
 }

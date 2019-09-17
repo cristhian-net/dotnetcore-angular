@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using System;
 using System.Collections.Generic;
 using dotnetcore.Models;
+using System.Threading.Tasks;
 
 namespace dotnetcore.Repository
 {
@@ -12,11 +13,11 @@ namespace dotnetcore.Repository
         void Delete(Guid id);
         void Edit(TEntity entity);
 
-        TEntity GetById(Guid id);
-        IEnumerable<TEntity> Filter();
-        IEnumerable<TEntity> Filter(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> GetById(Guid id);
+        Task<IEnumerable<TEntity>> Filter();
+        Task<IEnumerable<TEntity>> Filter(Expression<Func<TEntity, bool>> predicate);
 
         //separate method SaveChanges can be helpful when using this pattern with UnitOfWork
-        void SaveChanges();
+        Task<bool> SaveChanges();
     }
 }
