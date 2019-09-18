@@ -4,13 +4,15 @@ import { DataService } from './data.service';
 import { HttpClientModule } from '@angular/common/http';
 
 import { EnsureModuleLoadedOnceGuard } from '../shared/ensureModuleLoadedOnceGuard';
+import { DataFilterService } from './data-filter.service';
 
 @NgModule({
     imports: [
         HttpClientModule
     ],
     providers: [
-        DataService
+        DataService,
+        DataFilterService
     ],
 })
 export class CoreModule extends EnsureModuleLoadedOnceGuard {
