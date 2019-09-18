@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,11 @@ namespace dotnetcore.Repository
     {
         public CustomerRepository(CustomersDbContext context) : base(context)
         {
+        }
+
+        public async Task<Customer> GetByIdWithState(Guid id)
+        {
+            return await GetContext().Include(c => c.State).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<IEnumerable<Customer>> GetCustomersWithState()

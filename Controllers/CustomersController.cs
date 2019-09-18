@@ -38,5 +38,23 @@ namespace dotnetcore.Controllers
                 return BadRequest(new ApiResponse { Status = false });
             }
         }
+
+        [HttpGet("{id}", Name = "GetCustomerRoute")]
+        [NoCache]
+        [ProducesResponseType(typeof(Customer), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> Customers(Guid id)
+        {
+            try
+            {
+                var customer = await _customerRepository.GetByIdWithState(id);
+                return Ok(customer);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
     }
 }
